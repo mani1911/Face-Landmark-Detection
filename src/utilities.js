@@ -1,3 +1,4 @@
+import heart from "./assets/heart.png";
 export const TRIANGULATION = [
   127, 34, 139, 11, 0, 37, 232, 231, 120, 72, 37, 39, 128, 121, 47, 232, 121,
   128, 104, 69, 67, 175, 171, 148, 157, 154, 155, 118, 50, 101, 73, 39, 40, 9,
@@ -184,7 +185,6 @@ const drawPath = (ctx, points, closePath) => {
 export const drawEyesBig = (face, ctx, video) => {
   face.forEach((pred) => {
     const keypoints = pred.scaledMesh;
-    console.log("Consoled", keypoints[27][1]);
     // Left eye bounds (top, left, bottom, right) are the points (27, 130, 23, 243)
 
     let lTop = keypoints[27][1];
@@ -211,8 +211,8 @@ export const drawEyesBig = (face, ctx, video) => {
       rHei,
       rLeft - rWid * 0.5,
       rTop - rHei * 0.5,
-      2 * rWid,
-      2 * rHei
+      2.2 * rWid,
+      2.2 * rHei
     );
     ctx.drawImage(
       video,
@@ -222,9 +222,38 @@ export const drawEyesBig = (face, ctx, video) => {
       lHei,
       lLeft - lWid * 0.5,
       lTop - lHei * 0.5,
-      2 * lWid,
-      2 * lHei
+      2.2 * lWid,
+      2.2 * lHei
     );
+  });
+};
+
+export const test = (face, ctx, video) => {
+  face.forEach((pred) => {
+    const nosePoints = pred.annotations;
+
+    // Right eye bounds (top, left, bottom, right) are the points (257, 463, 253, 359)
+    console.log(nosePoints);
+    let noseBL = nosePoints.noseBottom[0][0];
+    let noseBT = nosePoints.noseBottom[0][1];
+
+    let noseLL = nosePoints.noseLeftCorner[0][0];
+    let noseLT = nosePoints.noseLeftCorner[0][1];
+
+    let noseRL = nosePoints.noseRightCorner[0][0];
+    let noseRT = nosePoints.noseRightCorner[0][1];
+
+    let noseTipL = nosePoints.noseTip[0][0];
+    let noseTipT = nosePoints.noseTip[0][1];
+
+    // Draw each eye from the video onto each eye in the canvas, but twice as big
+
+    ctx.beginPath();
+    ctx.arc(noseTipL, noseTipT - 20, (noseLL - noseRL) / 2, 0, 2 * Math.PI);
+    ctx.arc(noseLL, noseLT - 20, 10, 0, 2 * Math.PI);
+    ctx.arc(noseRL, noseRT - 20, 10, 0, 2 * Math.PI);
+    ctx.fillStyle = "red";
+    ctx.fill();
   });
 };
 
