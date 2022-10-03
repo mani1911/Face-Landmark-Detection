@@ -7,7 +7,7 @@ import * as tf from "@tensorflow/tfjs";
 // NEW MODEL
 import * as facemesh from "@tensorflow-models/face-landmarks-detection";
 import Webcam from "react-webcam";
-import { drawMesh } from "./utilities";
+import { drawMesh, drawEyesBig } from "./utilities";
 
 function App() {
   const webcamRef = useRef(null);
@@ -58,7 +58,7 @@ function App() {
       // Get canvas context
       const ctx = canvasRef.current.getContext("2d");
       requestAnimationFrame(() => {
-        drawMesh(face, ctx);
+        drawEyesBig(face, ctx, webcamRef.current.video);
       });
     }
   };
