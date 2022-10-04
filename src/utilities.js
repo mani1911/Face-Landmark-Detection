@@ -1,4 +1,7 @@
 import heart from "./assets/heart.png";
+import eyeImage from "./assets/thug-glass.png";
+const imag = new Image();
+imag.src = eyeImage;
 export const TRIANGULATION = [
   127, 34, 139, 11, 0, 37, 232, 231, 120, 72, 37, 39, 128, 121, 47, 232, 121,
   128, 104, 69, 67, 175, 171, 148, 157, 154, 155, 118, 50, 101, 73, 39, 40, 9,
@@ -228,12 +231,30 @@ export const drawEyesBig = (face, ctx, video) => {
   });
 };
 
+export const eyePatch = (face, ctx, video) => {
+  face.forEach((pred) => {
+    const rightEyeIris = pred.annotations;
+
+    // Right eye bounds (top, left, bottom, right) are the points (257, 463, 253, 359)
+
+    let testPointX = rightEyeIris.rightEyeIris[0][0];
+    let testPointY = rightEyeIris.rightEyeIris[0][1];
+
+    ctx.beginPath();
+
+    ctx.drawImage(imag, testPointX - 87, testPointY - 130, 290, 290);
+
+    ctx.fillStyle = "red";
+    ctx.fill();
+  });
+};
+
 export const test = (face, ctx, video) => {
   face.forEach((pred) => {
     const nosePoints = pred.annotations;
 
     // Right eye bounds (top, left, bottom, right) are the points (257, 463, 253, 359)
-    console.log(nosePoints);
+
     let noseBL = nosePoints.noseBottom[0][0];
     let noseBT = nosePoints.noseBottom[0][1];
 

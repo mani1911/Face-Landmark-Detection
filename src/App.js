@@ -1,13 +1,10 @@
 import React, { useRef, useEffect } from "react";
 import "./App.css";
 import * as tf from "@tensorflow/tfjs";
-// OLD MODEL
-//import * as facemesh from "@tensorflow-models/facemesh";
 
-// NEW MODEL
 import * as facemesh from "@tensorflow-models/face-landmarks-detection";
 import Webcam from "react-webcam";
-import { drawMesh, drawEyesBig, test } from "./utilities";
+import { drawMesh, drawEyesBig, eyePatch } from "./utilities";
 
 function App() {
   const webcamRef = useRef(null);
@@ -53,11 +50,11 @@ function App() {
       //       const face = await net.estimateFaces(video);
       // NEW MODEL
       const face = await net.estimateFaces({ input: video });
-
+      console.log(face);
       // Get canvas context
       const ctx = canvasRef.current.getContext("2d");
       requestAnimationFrame(() => {
-        test(face, ctx, webcamRef.current.video);
+        eyePatch(face, ctx, webcamRef.current.video);
       });
     }
   };
