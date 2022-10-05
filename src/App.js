@@ -4,20 +4,14 @@ import * as tf from "@tensorflow/tfjs";
 
 import * as facemesh from "@tensorflow-models/face-landmarks-detection";
 import Webcam from "react-webcam";
-import { drawMesh, drawEyesBig, thugLife } from "./utilities";
+import { thugLife } from "./filters/thugLifeFilter";
+import { drawEyesBig } from "./filters/bigEyesFilter";
+import { drawMesh } from "./utilities";
 
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-
-  //  Load posenet
   const runFacemesh = async () => {
-    // OLD MODEL
-    // const net = await facemesh.load({
-    //   inputResolution: { width: 640, height: 480 },
-    //   scale: 0.8,
-    // });
-    // NEW MODEL
     const net = await facemesh.load(
       facemesh.SupportedPackages.mediapipeFacemesh
     );
@@ -45,13 +39,8 @@ function App() {
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
 
-      // Make Detections
-      // OLD MODEL
-      //       const face = await net.estimateFaces(video);
-      // NEW MODEL
       const face = await net.estimateFaces({ input: video });
       console.log(face);
-      // Get canvas context
       const ctx = canvasRef.current.getContext("2d");
       requestAnimationFrame(() => {
         thugLife(face, ctx, webcamRef.current.video);
