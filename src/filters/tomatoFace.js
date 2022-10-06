@@ -33,28 +33,8 @@ export const tomatoFace = (face, ctx, video) => {
 
     // Draw each eye from the video onto each eye in the canvas, but twice as big
     ctx.drawImage(image, -150, -150);
-    ctx.drawImage(
-      video,
-      rLeft,
-      rTop,
-      rWid,
-      rHei,
-      400,
-      200,
-      1.5 * rWid,
-      1.5 * rHei
-    );
-    ctx.drawImage(
-      video,
-      lLeft,
-      lTop,
-      lWid,
-      lHei,
-      275,
-      200,
-      1.5 * lWid,
-      1.5 * lHei
-    );
+    ctx.drawImage(video, rLeft, rTop, rWid, rHei, 400, 200, 2 * rWid, 2 * rHei);
+    ctx.drawImage(video, lLeft, lTop, lWid, lHei, 275, 200, 2 * lWid, 2 * lHei);
 
     ctx.drawImage(
       video,
@@ -62,10 +42,10 @@ export const tomatoFace = (face, ctx, video) => {
       upperMin - 5,
       lipRight - lipLeft,
       lowerMax - upperMin,
-      310,
+      300,
       320,
-      lipRight - lipLeft,
-      lowerMax - upperMin
+      1.5 * (lipRight - lipLeft),
+      1.5 * (lowerMax - upperMin)
     );
   });
 };
