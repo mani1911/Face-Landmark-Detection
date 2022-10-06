@@ -7,6 +7,7 @@ import Webcam from "react-webcam";
 import { thugLife } from "./filters/thugLifeFilter";
 import { drawEyesBig } from "./filters/bigEyesFilter";
 import { drawMesh } from "./utilities";
+import { tomatoFace } from "./filters/tomatoFace";
 
 function App() {
   const webcamRef = useRef(null);
@@ -43,7 +44,7 @@ function App() {
       console.log(face);
       const ctx = canvasRef.current.getContext("2d");
       requestAnimationFrame(() => {
-        thugLife(face, ctx, webcamRef.current.video);
+        tomatoFace(face, ctx, webcamRef.current.video);
       });
     }
   };
