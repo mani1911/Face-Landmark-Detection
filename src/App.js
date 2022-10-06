@@ -8,6 +8,7 @@ import { thugLife } from "./filters/thugLifeFilter";
 import { drawEyesBig } from "./filters/bigEyesFilter";
 import { drawMesh } from "./utilities";
 import { tomatoFace } from "./filters/tomatoFace";
+import { drawMoustache } from "./filters/moustache";
 
 function App() {
   const webcamRef = useRef(null);
@@ -44,7 +45,7 @@ function App() {
       console.log(face);
       const ctx = canvasRef.current.getContext("2d");
       requestAnimationFrame(() => {
-        tomatoFace(face, ctx, webcamRef.current.video);
+        drawMoustache(face, ctx, webcamRef.current.video);
       });
     }
   };
