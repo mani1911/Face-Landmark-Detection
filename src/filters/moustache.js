@@ -11,6 +11,6 @@ export const drawMoustache = (face, ctx, video) => {
 
     ctx.arc(noseRight[0], noseRight[1], 5, 0, 2 * Math.PI);
 
-    ctx.drawImage(image, noseRight[0] - 65, noseRight[1] - 35, 200, 100);
+    ctx.drawImage(image, noseRight[0] - 65, noseRight[1] - 32, 200, 100);
   });
 };

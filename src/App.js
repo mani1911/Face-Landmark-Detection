@@ -9,6 +9,7 @@ import { drawEyesBig } from "./filters/bigEyesFilter";
 import { drawMesh } from "./utilities";
 import { tomatoFace } from "./filters/tomatoFace";
 import { drawMoustache } from "./filters/moustache";
+import { runnyNose } from "./filters/runnyNoseFilter";
 
 function App() {
   const webcamRef = useRef(null);
@@ -45,7 +46,7 @@ function App() {
       console.log(face);
       const ctx = canvasRef.current.getContext("2d");
       requestAnimationFrame(() => {
-        drawMoustache(face, ctx, webcamRef.current.video);
+        runnyNose(face, ctx, webcamRef.current.video);
       });
     }
   };
