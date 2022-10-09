@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import "./App.css";
 import * as tf from "@tensorflow/tfjs";
 
@@ -10,20 +10,54 @@ import { drawMesh } from "./utilities";
 import { tomatoFace } from "./filters/tomatoFace";
 import { drawMoustache } from "./filters/moustache";
 import { runnyNose } from "./filters/runnyNoseFilter";
-
+import FilterOption from "./components/FilterOption";
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  const runFacemesh = async () => {
+  let renderFunc = useRef(null);
+  const runFacemesh = async (func) => {
     const net = await facemesh.load(
       facemesh.SupportedPackages.mediapipeFacemesh
     );
     setInterval(() => {
-      detect(net);
+      detect(net, func);
     }, 10);
   };
 
-  const detect = async (net) => {
+  const clickHandler = (e) => {
+    console.log("Clicked");
+    const currFunc = obj.filter((ele) => ele.name === e.target.innerHTML);
+    renderFunc = currFunc[0].func;
+    console.log(renderFunc);
+    runFacemesh(renderFunc);
+  };
+  const obj = [
+    {
+      func: drawEyesBig,
+      name: "bigEyesFilter",
+    },
+    {
+      func: drawMoustache,
+      name: "moustacheFilter",
+    },
+    {
+      func: tomatoFace,
+      name: "tomatoFaceFilter",
+    },
+    {
+      func: runnyNose,
+      name: "runnyNoseFilter",
+    },
+    {
+      func: thugLife,
+      name: "thugLifeFilter",
+    },
+    {
+      func: drawMesh,
+      name: "drawMeshFilter",
+    },
+  ];
+  const detect = async (net, func) => {
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
@@ -37,23 +71,27 @@ function App() {
       // Set video width
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
-
+      console.log(webcamRef);
       // Set canvas width
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
+      console.log(canvasRef);
 
       const face = await net.estimateFaces({ input: video });
       console.log(face);
       const ctx = canvasRef.current.getContext("2d");
+
       requestAnimationFrame(() => {
-        runnyNose(face, ctx, webcamRef.current.video);
+        if (func && typeof func === "function") {
+          func(face, ctx, webcamRef.current.video);
+        }
       });
     }
   };
 
   useEffect(() => {
-    runFacemesh();
-  }, []);
+    runFacemesh(renderFunc);
+  }, [renderFunc]);
 
   return (
     <div className="App">
@@ -88,6 +126,13 @@ function App() {
           }}
         />
       </header>
+      {obj.map((ele) => (
+        <FilterOption
+          key={ele.name}
+          name={ele.name}
+          clickHandler={clickHandler}
+        />
+      ))}
     </div>
   );
 }

@@ -42,7 +42,7 @@ export const tomatoFace = (face, ctx, video) => {
       upperMin - 5,
       lipRight - lipLeft,
       lowerMax - upperMin,
-      300,
+      285,
       320,
       1.5 * (lipRight - lipLeft),
       1.5 * (lowerMax - upperMin)

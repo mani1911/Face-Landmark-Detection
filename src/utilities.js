@@ -180,7 +180,7 @@ const drawPath = (ctx, points, closePath) => {
   ctx.stroke(region);
 };
 
-export const drawMesh = (predictions, ctx) => {
+export const drawMesh = (predictions, ctx, video) => {
   if (predictions.length > 0) {
     predictions.forEach((prediction) => {
       const keypoints = prediction.scaledMesh;
