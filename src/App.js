@@ -1,9 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
+import runnyNoseFilter from "./assets/filterThumbnail/runnyNoseFilter.png";
+import bigEyesFilter from "./assets/filterThumbnail/bigEyesFilter.png";
+import moustacheFilter from "./assets/filterThumbnail/moustacheFilter.png";
+import thugLifeFilter from "./assets/filterThumbnail/thugLifeFilter.png";
+import tomatoFaceFilter from "./assets/filterThumbnail/tomatoFaceFilter.png";
+import drawMeshFilter from "./assets/filterThumbnail/drawMesh.png";
 import "./App.css";
 import * as tf from "@tensorflow/tfjs";
-
+import { Container, Stack } from "react-bootstrap";
 import * as facemesh from "@tensorflow-models/face-landmarks-detection";
-import Webcam from "react-webcam";
 import { thugLife } from "./filters/thugLifeFilter";
 import { drawEyesBig } from "./filters/bigEyesFilter";
 import { drawMesh } from "./utilities";
@@ -11,6 +16,8 @@ import { tomatoFace } from "./filters/tomatoFace";
 import { drawMoustache } from "./filters/moustache";
 import { runnyNose } from "./filters/runnyNoseFilter";
 import FilterOption from "./components/FilterOption";
+import Screen from "./components/Screen";
+import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -26,7 +33,7 @@ function App() {
 
   const clickHandler = (e) => {
     console.log("Clicked");
-    const currFunc = obj.filter((ele) => ele.name === e.target.innerHTML);
+    const currFunc = obj.filter((ele) => ele.name === e.currentTarget.id);
     renderFunc = currFunc[0].func;
     console.log(renderFunc);
     runFacemesh(renderFunc);
@@ -35,26 +42,47 @@ function App() {
     {
       func: drawEyesBig,
       name: "bigEyesFilter",
+      image: bigEyesFilter,
     },
     {
       func: drawMoustache,
       name: "moustacheFilter",
+      image: moustacheFilter,
     },
     {
       func: tomatoFace,
       name: "tomatoFaceFilter",
+      image: tomatoFaceFilter,
     },
     {
       func: runnyNose,
       name: "runnyNoseFilter",
+      image: runnyNoseFilter,
     },
     {
       func: thugLife,
       name: "thugLifeFilter",
+      image: thugLifeFilter,
     },
     {
       func: drawMesh,
       name: "drawMeshFilter",
+      image: drawMeshFilter,
+    },
+    {
+      func: drawMesh,
+      name: "drawMeshFilter",
+      image: drawMeshFilter,
+    },
+    {
+      func: drawMesh,
+      name: "drawMeshFilter",
+      image: drawMeshFilter,
+    },
+    {
+      func: drawMesh,
+      name: "drawMeshFilter",
+      image: drawMeshFilter,
     },
   ];
   const detect = async (net, func) => {
@@ -94,46 +122,26 @@ function App() {
   }, [renderFunc]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <Webcam
-          ref={webcamRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
-
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
-      </header>
-      {obj.map((ele) => (
-        <FilterOption
-          key={ele.name}
-          name={ele.name}
-          clickHandler={clickHandler}
-        />
-      ))}
-    </div>
+    <Container
+      fluid
+      className="d-flex mt-3 mb-3 justify-content-center align-items-center"
+    >
+      <Stack
+        className="bg-success w-50 p-3 overflow-scroll"
+        direction="horizontal"
+        gap={3}
+      >
+        {obj.map((ele) => (
+          <FilterOption
+            key={ele.name}
+            name={ele.name}
+            image={ele.image}
+            clickHandler={clickHandler}
+          />
+        ))}
+      </Stack>
+      <Screen webcamRef={webcamRef} canvasRef={canvasRef} />
+    </Container>
   );
 }
 

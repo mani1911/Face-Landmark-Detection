@@ -1,4 +1,4 @@
-import tomato from "../assets/tomato.png";
+import tomato from "../assets/filterAssets/tomato.png";
 const image = new Image();
 image.src = tomato;
 export const tomatoFace = (face, ctx, video) => {

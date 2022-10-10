@@ -1,4 +1,4 @@
-import moustache from "../assets/moustache.png";
+import moustache from "../assets/filterAssets/moustache.png";
 const image = new Image();
 image.src = moustache;
 image.width = 200;

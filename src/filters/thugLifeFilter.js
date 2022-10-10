@@ -1,5 +1,5 @@
-import eyeImage from "../assets/thug-glass.png";
-import cigar from "../assets/cigarette.png";
+import eyeImage from "../assets/filterAssets/thug-glass.png";
+import cigar from "../assets/filterAssets/cigarette.png";
 const thugGlass = new Image();
 const cigarette = new Image();
 cigarette.src = cigar;

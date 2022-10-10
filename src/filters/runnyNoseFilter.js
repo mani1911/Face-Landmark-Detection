@@ -1,5 +1,5 @@
-import image from "../assets/droplet.png";
-import image2 from "../assets/emote.png";
+import image from "../assets/filterAssets/droplet.png";
+import image2 from "../assets/filterAssets/emote.png";
 const droplet = new Image();
 droplet.src = image;
 
