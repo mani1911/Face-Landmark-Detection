@@ -1,4 +1,5 @@
 export const drawEyesBig = (face, ctx, video) => {
+  ctx.clearRect(0, 0, 640, 640);
   face.forEach((pred) => {
     const keypoints = pred.scaledMesh;
     // Left eye bounds (top, left, bottom, right) are the points (27, 130, 23, 243)

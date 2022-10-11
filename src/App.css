@@ -30,6 +30,24 @@
 .filterOptions {
   overflow-x: auto;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: red;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(255, 0, 0);
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

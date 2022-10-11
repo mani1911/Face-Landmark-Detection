@@ -1,90 +1,45 @@
 import React, { useRef, useEffect, useState } from "react";
-import runnyNoseFilter from "./assets/filterThumbnail/runnyNoseFilter.png";
-import bigEyesFilter from "./assets/filterThumbnail/bigEyesFilter.png";
-import moustacheFilter from "./assets/filterThumbnail/moustacheFilter.png";
-import thugLifeFilter from "./assets/filterThumbnail/thugLifeFilter.png";
-import tomatoFaceFilter from "./assets/filterThumbnail/tomatoFaceFilter.png";
-import drawMeshFilter from "./assets/filterThumbnail/drawMesh.png";
 import "./App.css";
 import * as tf from "@tensorflow/tfjs";
-import { Container, Stack } from "react-bootstrap";
+import { Container, Stack, Offcanvas, Button } from "react-bootstrap";
+import { obj } from "./controls/utility";
 import * as facemesh from "@tensorflow-models/face-landmarks-detection";
-import { thugLife } from "./filters/thugLifeFilter";
-import { drawEyesBig } from "./filters/bigEyesFilter";
-import { drawMesh } from "./utilities";
-import { tomatoFace } from "./filters/tomatoFace";
-import { drawMoustache } from "./filters/moustache";
-import { runnyNose } from "./filters/runnyNoseFilter";
+
 import FilterOption from "./components/FilterOption";
 import Screen from "./components/Screen";
 import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  let renderFunc = useRef(null);
+  const [show, setShow] = useState(false);
+  const [start, setStart] = useState(null);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const runFacemesh = async (func) => {
     const net = await facemesh.load(
       facemesh.SupportedPackages.mediapipeFacemesh
     );
-    setInterval(() => {
+    if (start) {
+      clearInterval(start);
+      setStart(null);
+    }
+    if (func === null) {
+      clearInterval(start);
+      setStart(null);
+    }
+    var temp = setInterval(() => {
       detect(net, func);
     }, 10);
+    setStart(temp);
   };
 
   const clickHandler = (e) => {
-    console.log("Clicked");
+    handleClose();
     const currFunc = obj.filter((ele) => ele.name === e.currentTarget.id);
-    renderFunc = currFunc[0].func;
-    console.log(renderFunc);
-    runFacemesh(renderFunc);
+    runFacemesh(currFunc[0].func);
   };
-  const obj = [
-    {
-      func: drawEyesBig,
-      name: "bigEyesFilter",
-      image: bigEyesFilter,
-    },
-    {
-      func: drawMoustache,
-      name: "moustacheFilter",
-      image: moustacheFilter,
-    },
-    {
-      func: tomatoFace,
-      name: "tomatoFaceFilter",
-      image: tomatoFaceFilter,
-    },
-    {
-      func: runnyNose,
-      name: "runnyNoseFilter",
-      image: runnyNoseFilter,
-    },
-    {
-      func: thugLife,
-      name: "thugLifeFilter",
-      image: thugLifeFilter,
-    },
-    {
-      func: drawMesh,
-      name: "drawMeshFilter",
-      image: drawMeshFilter,
-    },
-    {
-      func: drawMesh,
-      name: "drawMeshFilter",
-      image: drawMeshFilter,
-    },
-    {
-      func: drawMesh,
-      name: "drawMeshFilter",
-      image: drawMeshFilter,
-    },
-    {
-      func: drawMesh,
-      name: "drawMeshFilter",
-      image: drawMeshFilter,
-    },
-  ];
+
   const detect = async (net, func) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -108,7 +63,10 @@ function App() {
       const face = await net.estimateFaces({ input: video });
       console.log(face);
       const ctx = canvasRef.current.getContext("2d");
-
+      if (func === null) {
+        ctx.clearRect(0, 0, videoWidth, videoHeight);
+        return;
+      }
       requestAnimationFrame(() => {
         if (func && typeof func === "function") {
           func(face, ctx, webcamRef.current.video);
@@ -117,31 +75,53 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    runFacemesh(renderFunc);
-  }, [renderFunc]);
-
   return (
-    <Container
-      fluid
-      className="d-flex mt-3 mb-3 justify-content-center align-items-center"
-    >
-      <Stack
-        className="bg-success w-50 p-3 overflow-scroll"
-        direction="horizontal"
-        gap={3}
+    <>
+      <Offcanvas
+        show={show}
+        onHide={handleClose}
+        name="start"
+        placement="start"
       >
-        {obj.map((ele) => (
-          <FilterOption
-            key={ele.name}
-            name={ele.name}
-            image={ele.image}
-            clickHandler={clickHandler}
-          />
-        ))}
-      </Stack>
-      <Screen webcamRef={webcamRef} canvasRef={canvasRef} />
-    </Container>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title className="text-center">
+            <h1 className="font-italic">Filters</h1>
+          </Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <Stack
+            style={{ backgroundColor: "rgba(0,0,0,0.3)" }}
+            className="w-100 p-3 align-items-center"
+            direction="vertical"
+            gap={3}
+          >
+            {obj.map((ele) => (
+              <FilterOption
+                key={ele.name}
+                name={ele.name}
+                image={ele.image}
+                clickHandler={clickHandler}
+              />
+            ))}
+          </Stack>
+        </Offcanvas.Body>
+      </Offcanvas>
+      <Container
+        style={{ backgroundColor: "red", height: "100vh" }}
+        fluid
+        className="p-2 d-flex flex-column align-items-center"
+      >
+        <Screen webcamRef={webcamRef} canvasRef={canvasRef} />
+        <Button
+          variant="primary"
+          onClick={handleShow}
+          className="me-2 btn-lg"
+          style={{ width: "100px" }}
+        >
+          Filter
+        </Button>
+      </Container>
+    </>
   );
 }
 

@@ -1,8 +1,9 @@
 import React from "react";
-
+import "./components.css";
 const FilterOption = ({ name, clickHandler, image }) => {
   return (
     <div
+      className="scroll-bar"
       onClick={(e) => {
         clickHandler(e);
         console.log("Clicked", name);
@@ -10,11 +11,11 @@ const FilterOption = ({ name, clickHandler, image }) => {
       id={name}
     >
       <img
-        className="rounded-circle"
+        className="rounded-circle filterOption"
         src={image}
         alt={name}
-        width="80"
-        height="80"
+        width="120"
+        height="120"
       />
     </div>
   );
