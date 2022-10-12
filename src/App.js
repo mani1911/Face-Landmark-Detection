@@ -85,7 +85,7 @@ function App() {
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title className="text-center">
-            <h1 className="font-italic">Filters</h1>
+            <h1 className="font-italic">Filter Gallery</h1>
           </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
@@ -107,7 +107,7 @@ function App() {
         </Offcanvas.Body>
       </Offcanvas>
       <Container
-        style={{ backgroundColor: "red", height: "100vh" }}
+        style={{ backgroundColor: "black", height: "100vh" }}
         fluid
         className="p-2 d-flex flex-column align-items-center"
       >
